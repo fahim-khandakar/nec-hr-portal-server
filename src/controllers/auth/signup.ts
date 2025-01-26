@@ -11,40 +11,30 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  try {
-    signupSchema.parse(req.body);
-    const { email, name, password } = req.body;
-    const findUser = await prisma.user.findUnique({
-      where: { email: email },
-    });
-    if (findUser) {
-      next(
-        new BadRequestsException(
-          "Email Already Taken. Please another email.",
-          ErrorCode.USER_ALREADY_EXIST
-        )
-      );
-    }
-
-    const newUser = await prisma.user.create({
-      data: {
-        name: name,
-        email: email,
-        password: hashSync(password, 10),
-      },
-    });
-    res.json({
-      status: 200,
-      data: newUser,
-      message: "User created successfully",
-    });
-  } catch (error: any) {
+  signupSchema.parse(req.body);
+  const { email, name, password } = req.body;
+  const findUser = await prisma.user.findUnique({
+    where: { email: email },
+  });
+  if (findUser) {
     next(
-      new UnprocessableEntity(
-        error?.issues,
-        "Unprocessable entity",
-        ErrorCode.UNPROCESSABLE_ENTITY
+      new BadRequestsException(
+        "Email Already Taken. Please another email.",
+        ErrorCode.USER_ALREADY_EXIST
       )
     );
   }
+
+  const newUser = await prisma.user.create({
+    data: {
+      name: name,
+      email: email,
+      password: hashSync(password, 10),
+    },
+  });
+  res.json({
+    status: 200,
+    data: newUser,
+    message: "User created successfully",
+  });
 };
