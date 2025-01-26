@@ -8,7 +8,6 @@ const adminMiddleware = async (
   next: NextFunction
 ) => {
   const user = req.user;
-  console.log("hello world", user);
   if (user?.role == "ADMIN") {
     next();
   } else {
