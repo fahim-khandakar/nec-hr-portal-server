@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from "express";
 import { hashSync } from "bcrypt";
 import { BadRequestsException } from "../../exceptions/bad-request";
 import { ErrorCode } from "../../exceptions/root";
-import { UnprocessableEntity } from "../../exceptions/validation";
 import { signupSchema } from "../../schema/users";
 
 export const signup = async (
