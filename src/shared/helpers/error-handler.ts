@@ -16,7 +16,8 @@ export const errorHandler = (method: Function) => {
         if (error instanceof ZodError) {
           exception = new BadRequestsException(
             "Unprocessable Entity",
-            ErrorCode.UNPROCESSABLE_ENTITY
+            ErrorCode.UNPROCESSABLE_ENTITY,
+            error
           );
         } else {
           exception = new InternalException(
